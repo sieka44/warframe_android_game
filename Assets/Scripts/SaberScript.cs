@@ -8,7 +8,7 @@ public class SaberScript : MonoBehaviour
 
     private Vector3 defaultLocation;
     private int damage = 25;
-    private readonly float RAY_DISTANCE = 15;
+    private readonly float RAY_DISTANCE = 40;
     // Use this for initialization
     void Start ()
     {
