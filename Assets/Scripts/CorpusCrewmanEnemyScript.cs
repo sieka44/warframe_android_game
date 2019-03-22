@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GodotEnemyScript : MonoBehaviour {
+public class CorpusCrewmanEnemyScript : MonoBehaviour {
 
     Rigidbody2D rigidBody2d;
     Text label;

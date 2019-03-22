@@ -526,7 +526,7 @@ GameObject:
   - component: {fileID: 1093639285}
   - component: {fileID: 1093639287}
   m_Layer: 0
-  m_Name: GodotEnemy
+  m_Name: CorpusCrewmanEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -594,7 +594,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.4}
+  m_Offset: {x: -0.024588585, y: -0.8262043}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -605,7 +605,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.3, y: 1.3}
+  m_Size: {x: 2.0376606, y: 2.021267}
   m_EdgeRadius: 0
 --- !u!1 &1231283023
 GameObject:
@@ -852,6 +852,14 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 0.03
       objectReference: {fileID: 0}
+    - target: {fileID: 13700000, guid: ed9e8eaf10055784bbf4b9fa481be860, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 6a3955462e6da6c499ee47a7985eff9a, type: 2}
+    - target: {fileID: 13700002, guid: ed9e8eaf10055784bbf4b9fa481be860, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3a0a8baf96f571645a7555aded93ce6e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed9e8eaf10055784bbf4b9fa481be860, type: 3}
 --- !u!4 &2010923529 stripped
