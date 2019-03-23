@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\CorpusCrewmanEnemyScript.cs" />
     <Compile Include="Assets\Scripts\SaberScript.cs" />
+    <Compile Include="Assets\Scripts\Spawner.cs" />
     <Reference Include="Unity.TextMeshPro.Editor">
       <HintPath>D:/backup/STUDY/UJ/Programowanie Gier w C++/UnityProjects/warframe_android_game/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>

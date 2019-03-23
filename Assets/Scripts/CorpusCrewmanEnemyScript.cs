@@ -8,27 +8,37 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     Rigidbody2D rigidBody2d;
     Text label;
     int health;
+    Vector2 startVelocity;
 	// Use this for initialization
+
+    public void setStartVelocity(Vector2 startVelocity)
+    {
+        this.startVelocity= startVelocity;
+    }
+
 	void Start ()
     {
         health = 100;
         rigidBody2d = GetComponent<Rigidbody2D>();
         label = transform.Find("Canvas").Find("Text").GetComponent<Text>();
-        rigidBody2d.velocity = new Vector2(2, 13);
+        rigidBody2d.velocity = startVelocity;
         rigidBody2d.angularVelocity = 3;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        health -= collision.gameObject.GetComponent<SaberScript>().getDamage();
-        Debug.Log(health);
+        if(collision.tag == "Saber")
+        {
+            health -= collision.gameObject.GetComponent<SaberScript>().getDamage();
+            Debug.Log(health);
+        }
     }
 
     // Update is called once per frame
     void Update ()
     {
         if (health <= 0) Destroy(gameObject);
+        if (transform.position.y < -5.5) Destroy(gameObject);
         label.text = "Health: " + health + "%";
-        
 	}
 }
