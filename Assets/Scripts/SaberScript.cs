@@ -7,15 +7,17 @@ public class SaberScript : MonoBehaviour
 {
 
     private Vector3 defaultLocation;
-    private int damage = 25;
-    private readonly float RAY_DISTANCE = 40;
+    private readonly int damage = 25;
+    private readonly float speed = 10.0f;
+    private ParticleSystem particle = null;
     // Use this for initialization
     void Start ()
     {
-        defaultLocation.Set(-10, 0, 0);
+        defaultLocation.Set(0, 0, 0);
+        particle = this.gameObject.GetComponentInChildren<ParticleSystem>();
 	}
 
-    public int getDamage()
+    public int GetDamage()
     {
         return damage;
     }
@@ -23,21 +25,21 @@ public class SaberScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if(Input.GetMouseButton(0) || ( Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved ))
+        /*
+        if (Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved))
         {
-            /*
-            Vector3 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            newPosition.z = 0;
-            transform.position = newPosition;
-            */
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Vector3 pos = ray.GetPoint(RAY_DISTANCE);
-            transform.position = pos;
+            particle.enableEmission = true;
         }
         else
         {
-            transform.position = defaultLocation;
+            particle.enableEmission = false;
         }
+        */
+        Vector3 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        newPosition.z = 0;
+        Vector3 position = Vector3.Lerp(transform.position, newPosition, 1.0f - Mathf.Exp(-speed * Time.deltaTime));
+
+        transform.position = position;        
     }
 }
     

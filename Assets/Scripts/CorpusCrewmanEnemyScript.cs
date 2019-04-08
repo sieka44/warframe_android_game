@@ -29,7 +29,7 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     {
         if(collision.tag == "Saber")
         {
-            health -= collision.gameObject.GetComponent<SaberScript>().getDamage();
+            health -= collision.gameObject.GetComponent<SaberScript>().GetDamage();
             Debug.Log(health);
         }
     }
