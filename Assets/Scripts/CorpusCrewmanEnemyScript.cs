@@ -20,6 +20,11 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     {
         health = 100;
         rigidBody2d = GetComponent<Rigidbody2D>();
+
+        Vector3 rotationAxis = new Vector3(Random.Range(-180, 180), Random.Range(-180, 180), Random.Range(-180, 180));
+        Transform corpusCrewmanTransform = transform.GetChild(1);
+        corpusCrewmanTransform.Rotate(rotationAxis);
+
         label = transform.Find("Canvas").Find("Text").GetComponent<Text>();
         rigidBody2d.velocity = startVelocity;
         rigidBody2d.angularVelocity = 3;

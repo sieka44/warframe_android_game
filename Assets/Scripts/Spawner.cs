@@ -46,7 +46,7 @@ public class Spawner : MonoBehaviour
                 float power = (5 - spawnPosition.x)/3;
                 spawnVelocity.x = Random.Range(0, power);
             }
-            newEnemy.transform.Find("corpusCrewman").Find("crewman_body").GetComponent<Renderer>().material = bodyMaterials[(int)Random.Range(0, bodyMaterials.Count -1)];
+            newEnemy.transform.Find("corpusCrewmanContainer").Find("corpusCrewman").Find("crewman_body").GetComponent<Renderer>().material = bodyMaterials[(int)Random.Range(0, bodyMaterials.Count -1)];
             newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setStartVelocity(spawnVelocity);
         }
 
