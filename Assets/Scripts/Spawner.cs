@@ -50,6 +50,5 @@ public class Spawner : MonoBehaviour
             newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setStartVelocity(spawnVelocity);
         }
 
-        Debug.Log(numberOfSpawnedEnemies);
     }
 }

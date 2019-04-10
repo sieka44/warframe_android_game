@@ -9,14 +9,15 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     Text label;
     int health;
     Vector2 startVelocity;
-	// Use this for initialization
+    Animation corpusCrewmanAnimation;
 
     public void setStartVelocity(Vector2 startVelocity)
     {
         this.startVelocity= startVelocity;
     }
 
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
         health = 100;
         rigidBody2d = GetComponent<Rigidbody2D>();
@@ -27,7 +28,9 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
 
         label = transform.Find("Canvas").Find("Text").GetComponent<Text>();
         rigidBody2d.velocity = startVelocity;
-        rigidBody2d.angularVelocity = 3;
+
+        corpusCrewmanAnimation = transform.Find("corpusCrewmanContainer").Find("corpusCrewman").GetComponent<Animation>();
+        corpusCrewmanAnimation.Play("CorpusCrewmanPose" + Random.Range(1, 3));
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -35,7 +38,6 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
         if(collision.tag == "Saber")
         {
             health -= collision.gameObject.GetComponent<SaberScript>().GetDamage();
-            Debug.Log(health);
         }
     }
 
