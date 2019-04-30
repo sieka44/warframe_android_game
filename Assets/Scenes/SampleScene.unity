@@ -144,6 +144,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 4116102991518454619, guid: 71e7d92e259addc4f8ae4a4d47fc2bdc,
     type: 3}
+  bombPrefab: {fileID: 4116102991518454619, guid: c665bb678a4efcf4d9b6cc34f5fa1be5,
+    type: 3}
 --- !u!212 &45414880
 SpriteRenderer:
   m_ObjectHideFlags: 0

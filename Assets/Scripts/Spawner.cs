@@ -6,6 +6,7 @@ using System.IO;
 public class Spawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
+    public GameObject bombPrefab;
     private Vector3 spawnPosition;
     private Vector2 spawnVelocity;
 
@@ -47,8 +48,24 @@ public class Spawner : MonoBehaviour
                 spawnVelocity.x = Random.Range(0, power);
             }
             newEnemy.transform.Find("corpusCrewmanContainer").Find("corpusCrewman").Find("crewman_body").GetComponent<Renderer>().material = bodyMaterials[(int)Random.Range(0, bodyMaterials.Count -1)];
-            newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setStartVelocity(spawnVelocity);
+            newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(spawnVelocity);
         }
+
+        var newBomb = Instantiate(bombPrefab);
+        spawnPosition.Set(Random.Range(-3, 3), -5.5f, 0f);
+        newBomb.transform.position = spawnPosition;
+        spawnVelocity.Set(Random.Range(-1, 1), Random.Range(11, 14));
+        if (spawnVelocity.x < 0)
+        {
+            float power = (-5 - spawnPosition.x) / 3;
+            spawnVelocity.x = Random.Range(power, 0);
+        }
+        else
+        {
+            float power = (5 - spawnPosition.x) / 3;
+            spawnVelocity.x = Random.Range(0, power);
+        }
+        newBomb.gameObject.GetComponent<CorpusBombScript>().setStartVelocity(spawnVelocity);
 
     }
 }

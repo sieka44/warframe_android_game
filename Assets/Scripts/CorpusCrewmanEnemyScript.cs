@@ -10,10 +10,23 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     int health;
     Vector2 startVelocity;
     Animation corpusCrewmanAnimation;
+    Transform corpusCrewmanTransform;
+    Vector3 rotationAxis;
 
-    public void setStartVelocity(Vector2 startVelocity)
+    public Vector2 getVelocity()
     {
-        this.startVelocity= startVelocity;
+        return rigidBody2d.velocity;
+    }
+    public void setVelocity(Vector2 velocity)
+    {
+        try
+        {
+            rigidBody2d.velocity = velocity;
+        }
+        catch(System.NullReferenceException)
+        {
+            startVelocity = velocity;
+        }
     }
 
     // Use this for initialization
@@ -22,8 +35,8 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
         health = 100;
         rigidBody2d = GetComponent<Rigidbody2D>();
 
-        Vector3 rotationAxis = new Vector3(Random.Range(-180, 180), Random.Range(-180, 180), Random.Range(-180, 180));
-        Transform corpusCrewmanTransform = transform.GetChild(1);
+        rotationAxis = new Vector3(Random.Range(-180, 180), Random.Range(-180, 180), Random.Range(-180, 180));
+        corpusCrewmanTransform = transform.GetChild(1);
         corpusCrewmanTransform.Rotate(rotationAxis);
 
         label = transform.Find("Canvas").Find("Text").GetComponent<Text>();
@@ -46,6 +59,7 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     {
         if (health <= 0) Destroy(gameObject);
         if (transform.position.y < -5.5) Destroy(gameObject);
+        corpusCrewmanTransform.Rotate(rotationAxis, 100 * Time.deltaTime);
         label.text = "Health: " + health + "%";
 	}
 }

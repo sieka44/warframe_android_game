@@ -8,7 +8,7 @@ public class SaberScript : MonoBehaviour
 
     private Vector3 defaultLocation;
     private readonly int damage = 25;
-    private readonly float speed = 10.0f;
+    private readonly float speed = 100.0f;
     private ParticleSystem particle = null;
     // Use this for initialization
     void Start ()
@@ -25,16 +25,6 @@ public class SaberScript : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        /*
-        if (Input.GetMouseButton(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved))
-        {
-            particle.enableEmission = true;
-        }
-        else
-        {
-            particle.enableEmission = false;
-        }
-        */
         Vector3 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         newPosition.z = 0;
         Vector3 position = Vector3.Lerp(transform.position, newPosition, 1.0f - Mathf.Exp(-speed * Time.deltaTime));
