@@ -13,7 +13,7 @@ public class CorpusBombScript : MonoBehaviour
     Transform corpusBombTransform;
     Vector3 rotationAxis;
 
-    float explosionPower = 2;
+    public float explosionPower = 1;
 
     public void setStartVelocity(Vector2 startVelocity)
     {
@@ -53,10 +53,9 @@ public class CorpusBombScript : MonoBehaviour
                 Vector3 enemyPosition = enemy.transform.position;
                 Vector3 explosionDirection = enemyPosition - transform.position;
                 float distance = Mathf.Sqrt(Mathf.Pow(enemyPosition.x - transform.position.x, 2) + Mathf.Pow(enemyPosition.y - transform.position.y, 2) + Mathf.Pow(enemyPosition.z - transform.position.z, 2));
-                explosionDirection.Set(explosionPower * explosionDirection.x / distance, explosionPower * explosionDirection.y / distance, explosionPower * explosionDirection.z / distance);
                 
                 Vector3 velocity = enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().getVelocity();
-                enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(velocity + explosionDirection);
+                enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(velocity + explosionDirection.normalized * (explosionPower/distance));
             }
             Destroy(gameObject);
         }
