@@ -52,19 +52,20 @@ public class Spawner : MonoBehaviour
         }
 
         var newBomb = Instantiate(bombPrefab);
-        spawnPosition.Set(Random.Range(-3, 3), -5.5f, 0f);
+
+        spawnPosition.Set(-6f, Random.Range(-3, 0), 0f);
         newBomb.transform.position = spawnPosition;
-        spawnVelocity.Set(Random.Range(-1, 1), Random.Range(11, 14));
-        if (spawnVelocity.x < 0)
-        {
-            float power = (-5 - spawnPosition.x) / 3;
-            spawnVelocity.x = Random.Range(power, 0);
-        }
-        else
-        {
-            float power = (5 - spawnPosition.x) / 3;
-            spawnVelocity.x = Random.Range(0, power);
-        }
+        spawnVelocity.Set(Random.Range(5, 7), Random.Range(7, 10));
+        //if (spawnVelocity.x < 0)
+        //{
+        //    float power = (-5 - spawnPosition.x) / 3;
+        //    spawnVelocity.x = Random.Range(power, 0);
+        //}
+        //else
+        //{
+        //    float power = (5 - spawnPosition.x) / 3;
+        //    spawnVelocity.x = Random.Range(0, power);
+        //}
         newBomb.gameObject.GetComponent<CorpusBombScript>().setStartVelocity(spawnVelocity);
 
     }

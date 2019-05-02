@@ -23,7 +23,7 @@ public class CorpusBombScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        health = 100;
+        health = 50;
         rigidBody2d = GetComponent<Rigidbody2D>();
 
         rotationAxis = new Vector3(Random.Range(-180, 180), Random.Range(-180, 180), Random.Range(-180, 180));
