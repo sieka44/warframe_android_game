@@ -52,10 +52,10 @@ public class CorpusBombScript : MonoBehaviour
             {
                 Vector3 enemyPosition = enemy.transform.position;
                 Vector3 explosionDirection = enemyPosition - transform.position;
-                float distance = Mathf.Sqrt(Mathf.Pow(enemyPosition.x - transform.position.x, 2) + Mathf.Pow(enemyPosition.y - transform.position.y, 2) + Mathf.Pow(enemyPosition.z - transform.position.z, 2));
-                
+                float distance = Vector3.Distance(enemyPosition, transform.position);
+
                 Vector3 velocity = enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().getVelocity();
-                enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(velocity + explosionDirection.normalized * (explosionPower/distance));
+                enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(velocity + explosionDirection.normalized * (explosionPower/Mathf.Sqrt(distance)));
             }
             Destroy(gameObject);
         }

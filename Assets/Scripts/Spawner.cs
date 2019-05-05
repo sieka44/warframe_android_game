@@ -12,6 +12,33 @@ public class Spawner : MonoBehaviour
 
     List<Material> bodyMaterials = new List<Material>();
     // Start is called before the first frame update
+
+    Vector3 generateBombSpawnPosition()
+    {
+        float x = Random.Range(-7f, 7f);
+        if (x < 0) x = -7f;
+        else x = 7f;
+        Vector3 spawnPosition = new Vector3(x, Random.Range(-3, 0), 0f);
+        return spawnPosition;
+    }
+
+    void createNewBomb()
+    {
+        var newBomb = Instantiate(bombPrefab);
+        newBomb.transform.position = generateBombSpawnPosition();
+        spawnVelocity.Set(Random.Range(5, 7), Random.Range(7, 10));
+
+        if (newBomb.transform.position.x < 0)
+        {
+            spawnVelocity.x = Random.Range(4, 6);
+        }
+        else
+        {
+            spawnVelocity.x = Random.Range(-6, -4);
+        }
+        newBomb.gameObject.GetComponent<CorpusBombScript>().setStartVelocity(spawnVelocity);
+    }
+
     void Start()
     {
         //enemyPrefab = Resources.Load("CorpusCrewmanEnemy", typeof(GameObject)) as GameObject;
@@ -51,22 +78,7 @@ public class Spawner : MonoBehaviour
             newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(spawnVelocity);
         }
 
-        var newBomb = Instantiate(bombPrefab);
-
-        spawnPosition.Set(-6f, Random.Range(-3, 0), 0f);
-        newBomb.transform.position = spawnPosition;
-        spawnVelocity.Set(Random.Range(5, 7), Random.Range(7, 10));
-        //if (spawnVelocity.x < 0)
-        //{
-        //    float power = (-5 - spawnPosition.x) / 3;
-        //    spawnVelocity.x = Random.Range(power, 0);
-        //}
-        //else
-        //{
-        //    float power = (5 - spawnPosition.x) / 3;
-        //    spawnVelocity.x = Random.Range(0, power);
-        //}
-        newBomb.gameObject.GetComponent<CorpusBombScript>().setStartVelocity(spawnVelocity);
-
+        float bombSpawnPorbability = Random.Range(0f, 100f);
+        if (bombSpawnPorbability < 10f) createNewBomb();
     }
 }
