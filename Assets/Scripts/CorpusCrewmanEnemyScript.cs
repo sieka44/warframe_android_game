@@ -19,7 +19,7 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     Transform shieldsBar;
 
     const float healthBarSize = 1.5f;
-    const int BASE_HEALTH = 60;
+    const int BASE_HEALTH = 75;
     const int BASE_SHIELDS = 150;
 
     public Vector2 getVelocity()
@@ -43,8 +43,8 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     {
         transform.position = spawnPosition;
         startVelocity = spawnVelocity;
-        maxHealth = BASE_HEALTH * enemyLevel;
-        maxShields = BASE_SHIELDS * enemyLevel;
+        maxHealth = (int)(BASE_HEALTH * (1 + System.Math.Pow(enemyLevel - 1, 2) * 0.015));
+        maxShields = (int)(BASE_SHIELDS * (1 + System.Math.Pow(enemyLevel - 1, 2)* 0.0075));
         health = maxHealth;
         shields = maxShields;
         transform.Find("Canvas").Find("Text").GetComponent<Text>().text = enemyLevel.ToString();
