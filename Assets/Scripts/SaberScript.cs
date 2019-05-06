@@ -23,7 +23,7 @@ public class SaberScript : MonoBehaviour
     }
 	
 	// Update is called once per frame
-	void Update ()
+	void Update()
     {
         Vector3 newPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         newPosition.z = 0;

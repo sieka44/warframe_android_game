@@ -10,7 +10,8 @@ public class Spawner : MonoBehaviour
     private Vector3 spawnPosition;
     private Vector2 spawnVelocity;
 
-    List<Material> bodyMaterials = new List<Material>();
+    int enemyLevel = 1;
+
     // Start is called before the first frame update
 
     Vector3 generateBombSpawnPosition()
@@ -41,11 +42,6 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-        //enemyPrefab = Resources.Load("CorpusCrewmanEnemy", typeof(GameObject)) as GameObject;
-        for (int i = 1; i < 11; i++)
-        {
-            bodyMaterials.Add(Resources.Load<Material>("Materials/CorpusCrewman/body" + i));
-        }
         StartCoroutine(SpawnEnemies());
     }
 
@@ -60,8 +56,8 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < numberOfSpawnedEnemies; i++)
         {
             var newEnemy = Instantiate(enemyPrefab);
+
             spawnPosition.Set(Random.Range(-3, 3), -5.5f, 0f);
-            newEnemy.transform.position = spawnPosition;
             spawnVelocity.Set(Random.Range(-1, 1), Random.Range(11, 14));
             if (spawnVelocity.x < 0)
             {
@@ -73,8 +69,8 @@ public class Spawner : MonoBehaviour
                 float power = (5 - spawnPosition.x) / 3;
                 spawnVelocity.x = Random.Range(0, power);
             }
-            newEnemy.transform.Find("corpusCrewmanContainer").Find("corpusCrewman").Find("crewman_body").GetComponent<Renderer>().material = bodyMaterials[(int)Random.Range(0, bodyMaterials.Count - 1)];
-            newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(spawnVelocity);
+
+            newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().spawn(enemyLevel, spawnPosition, spawnVelocity);
         }
         if (willSpawnWithBomb) createNewBomb();
     }
@@ -85,8 +81,8 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < numberOfSpawnedEnemies; i++)
         {
             var newEnemy = Instantiate(enemyPrefab);
+
             spawnPosition.Set(Random.Range(-3, 3), -5.5f, 0f);
-            newEnemy.transform.position = spawnPosition;
             spawnVelocity.Set(Random.Range(-1, 1), Random.Range(11, 14));
             if (spawnVelocity.x < 0)
             {
@@ -98,8 +94,8 @@ public class Spawner : MonoBehaviour
                 float power = (5 - spawnPosition.x) / 3;
                 spawnVelocity.x = Random.Range(0, power);
             }
-            newEnemy.transform.Find("corpusCrewmanContainer").Find("corpusCrewman").Find("crewman_body").GetComponent<Renderer>().material = bodyMaterials[(int)Random.Range(0, bodyMaterials.Count - 1)];
-            newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(spawnVelocity);
+
+            newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().spawn(enemyLevel, spawnPosition, spawnVelocity);
 
             if ((willSpawnWithBomb) && (bombSpawnOrder == i)) createNewBomb();
             yield return new WaitForSeconds(0.2f);
