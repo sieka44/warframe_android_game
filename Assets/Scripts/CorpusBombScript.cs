@@ -9,9 +9,12 @@ public class CorpusBombScript : MonoBehaviour
     Rigidbody2D rigidBody2d;
     Text label;
     int health;
+    int maxHealth = 100;
     Vector2 startVelocity;
     Transform corpusBombTransform;
     Vector3 rotationAxis;
+
+    Transform healthBar;
 
     public float explosionPower = 1;
 
@@ -20,10 +23,25 @@ public class CorpusBombScript : MonoBehaviour
         this.startVelocity = startVelocity;
     }
 
+    public void spawn(Vector3 spawnPosition, Vector2 spawnVelocity)
+    {
+        transform.position = spawnPosition;
+        startVelocity = spawnVelocity;
+        health = maxHealth;
+
+        updateBar();
+    }
+
+    private void updateBar()
+    {
+        if (healthBar == null) healthBar = transform.Find("HealthBar").Find("HealthPointsBar");
+
+        healthBar.localScale = new Vector3((float)System.Math.Round((float)health / maxHealth, 2), 1f, 1f);
+    }
+
     // Use this for initialization
     void Start()
     {
-        health = 50;
         rigidBody2d = GetComponent<Rigidbody2D>();
 
         rotationAxis = new Vector3(Random.Range(-180, 180), Random.Range(-180, 180), Random.Range(-180, 180));
@@ -38,7 +56,8 @@ public class CorpusBombScript : MonoBehaviour
     {
         if (collision.tag == "Saber")
         {
-            health -= collision.gameObject.GetComponent<SaberScript>().GetDamage();
+            health -= 34;
+            updateBar();
         }
     }
 

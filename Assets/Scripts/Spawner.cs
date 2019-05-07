@@ -26,10 +26,9 @@ public class Spawner : MonoBehaviour
     void createNewBomb()
     {
         var newBomb = Instantiate(bombPrefab);
-        newBomb.transform.position = generateBombSpawnPosition();
+        Vector3 spawnPosition = generateBombSpawnPosition();
         spawnVelocity.Set(Random.Range(5, 7), Random.Range(7, 10));
-
-        if (newBomb.transform.position.x < 0)
+        if (spawnPosition.x < 0)
         {
             spawnVelocity.x = Random.Range(4, 6);
         }
@@ -37,7 +36,8 @@ public class Spawner : MonoBehaviour
         {
             spawnVelocity.x = Random.Range(-6, -4);
         }
-        newBomb.gameObject.GetComponent<CorpusBombScript>().setStartVelocity(spawnVelocity);
+
+        newBomb.gameObject.GetComponent<CorpusBombScript>().spawn(spawnPosition, spawnVelocity);
     }
 
     void Start()
@@ -116,7 +116,7 @@ public class Spawner : MonoBehaviour
 
                 float bombSpawnPorbability = Random.Range(0f, 100f);
                 bool willSpawnWithBomb = false;
-                if (bombSpawnPorbability < 10f) willSpawnWithBomb = true;
+                if (bombSpawnPorbability < 100f) willSpawnWithBomb = true;
 
                 switch (spawnScriptNumber)
                 {
