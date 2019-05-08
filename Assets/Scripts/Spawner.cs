@@ -116,7 +116,7 @@ public class Spawner : MonoBehaviour
 
                 float bombSpawnPorbability = Random.Range(0f, 100f);
                 bool willSpawnWithBomb = false;
-                if (bombSpawnPorbability < 10f) willSpawnWithBomb = true;
+                if (bombSpawnPorbability < 100f) willSpawnWithBomb = true;
 
                 switch (spawnScriptNumber)
                 {

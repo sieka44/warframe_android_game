@@ -74,7 +74,7 @@ public class CorpusBombScript : MonoBehaviour
                 float distance = Vector3.Distance(enemyPosition, transform.position);
 
                 Vector3 velocity = enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().getVelocity();
-                enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(velocity + explosionDirection.normalized * (explosionPower/Mathf.Sqrt(distance)));
+                enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(velocity + explosionDirection.normalized * (5/Mathf.Pow(distance, 1/8)));
             }
             Destroy(gameObject);
         }
