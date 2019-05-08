@@ -48,7 +48,7 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        enemyLevel = 1 + (int)(Time.timeSinceLevelLoad / 10);
     }
 
     void spawnAllFromBottom(int numberOfSpawnedEnemies, bool willSpawnWithBomb)
@@ -116,7 +116,7 @@ public class Spawner : MonoBehaviour
 
                 float bombSpawnPorbability = Random.Range(0f, 100f);
                 bool willSpawnWithBomb = false;
-                if (bombSpawnPorbability < 100f) willSpawnWithBomb = true;
+                if (bombSpawnPorbability < 10f) willSpawnWithBomb = true;
 
                 switch (spawnScriptNumber)
                 {

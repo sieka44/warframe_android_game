@@ -7,6 +7,7 @@ TagManager:
   - Saber
   - Enemy
   - Bomb
+  - SoundSource
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,8 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
 
     Transform healthBar;
     Transform shieldsBar;
+    AudioSource corpusCrewmanVoice;
+    AudioSource corpusCrewmanDeath;
 
     const float healthBarSize = 1.5f;
     const int BASE_HEALTH = 75;
@@ -71,6 +73,8 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     void Start ()
     {
         rigidBody2d = GetComponent<Rigidbody2D>();
+        corpusCrewmanVoice = GetComponent<AudioSource>();
+        corpusCrewmanDeath = GameObject.FindGameObjectWithTag("SoundSource").GetComponent<AudioSource>();
 
         rotationAxis = new Vector3(Random.Range(-180, 180), Random.Range(-180, 180), Random.Range(-180, 180));
         corpusCrewmanTransform = transform.GetChild(1);
@@ -88,6 +92,14 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
         }
         transform.Find("corpusCrewmanContainer").Find("corpusCrewman").Find("crewman_body").GetComponent<Renderer>().material = bodyMaterials[(int)Random.Range(0, bodyMaterials.Count - 1)];
         bodyMaterials = null;
+
+        if(Random.Range(1, 100) < 15)
+        {
+            List<AudioClip> corpusSpeech = new List<AudioClip>();
+            for (int i = 1; i < 8; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Quiet/corpus_quiet_0" + i));
+            corpusCrewmanVoice.clip = corpusSpeech[Random.Range(0, 7)];
+            corpusCrewmanVoice.Play();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -104,7 +116,15 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
                 shields = 0;
                 health -= saberDamage;
             }
-            
+
+            if (Random.Range(1, 100) < 15)
+            {
+                List<AudioClip> corpusSpeech = new List<AudioClip>();
+                for (int i = 1; i < 5; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Pain/corpus_pain_0" + i));
+                corpusCrewmanVoice.clip = corpusSpeech[Random.Range(0, 4)];
+                corpusCrewmanVoice.Play();
+            }
+
             updateBar();
         }
     }
@@ -112,7 +132,14 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     // Update is called once per frame
     void Update ()
     {
-        if (health <= 0) Destroy(gameObject);
+        if (health <= 0)
+        {
+            List<AudioClip> corpusSpeech = new List<AudioClip>();
+            for (int i = 1; i < 7; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Death/corpus_death_0" + i));
+            corpusCrewmanDeath.clip = corpusSpeech[Random.Range(0, 5)];
+            corpusCrewmanDeath.Play();
+            Destroy(gameObject);
+        }
         if (transform.position.y < -5.5) Destroy(gameObject);
         corpusCrewmanTransform.Rotate(rotationAxis, 100 * Time.deltaTime);
 	}
