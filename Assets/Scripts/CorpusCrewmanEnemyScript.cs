@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CorpusCrewmanEnemyScript : MonoBehaviour {
+public class CorpusCrewmanEnemyScript : MonoBehaviour
+{
+    WarframeCharacterScript warframeCharacter;
 
     Rigidbody2D rigidBody2d;
     int health;
@@ -72,6 +74,7 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        warframeCharacter = GameObject.Find("WarframeCharacter").GetComponent<WarframeCharacterScript>();
         rigidBody2d = GetComponent<Rigidbody2D>();
         corpusCrewmanVoice = GetComponent<AudioSource>();
         corpusCrewmanDeath = GameObject.FindGameObjectWithTag("SoundSource").GetComponent<AudioSource>();
@@ -140,7 +143,12 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour {
             corpusCrewmanDeath.Play();
             Destroy(gameObject);
         }
-        if (transform.position.y < -5.5) Destroy(gameObject);
+        if (transform.position.y < -5.5)
+        {
+            warframeCharacter.getDamageFromEnemy(100);
+            Destroy(gameObject);
+        }
+            
         corpusCrewmanTransform.Rotate(rotationAxis, 100 * Time.deltaTime);
 	}
 }

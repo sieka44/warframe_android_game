@@ -10,6 +10,8 @@ public class Spawner : MonoBehaviour
     private Vector3 spawnPosition;
     private Vector2 spawnVelocity;
 
+    IEnumerator spawnEnemiesProcess;
+
     int enemyLevel = 1;
 
     // Start is called before the first frame update
@@ -42,7 +44,8 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(SpawnEnemies());
+        spawnEnemiesProcess = SpawnEnemies();
+        StartCoroutine(spawnEnemiesProcess);
     }
 
     // Update is called once per frame
@@ -104,7 +107,8 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnEnemies()
     {
-        while(true)
+        yield return new WaitForSeconds(1f);
+        while (true)
         {
             GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
@@ -135,5 +139,11 @@ public class Spawner : MonoBehaviour
             }
             yield return new WaitForSeconds(1f);
         }
+    }
+
+    public void stopTheGame()
+    {
+        Debug.Log("Game Stopped");
+        StopCoroutine(spawnEnemiesProcess);
     }
 }
