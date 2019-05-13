@@ -109,15 +109,17 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
     {
         if(collision.tag == "Saber")
         {
-            int saberDamage = collision.gameObject.GetComponent<SaberScript>().GetDamage();
+            SaberDamage saberDamage = collision.gameObject.GetComponent<SaberScript>().GetDamage();
+
             if (shields >0)
             {
-                shields -= saberDamage;
+                int damage = saberDamage.getSlash() + (int)(saberDamage.getCold() * 1.5) + saberDamage.getElectricity() + saberDamage.getHeat() + saberDamage.getToxin();
+                shields = Mathf.Clamp(shields - damage, 0, shields);
             }
             else
             {
-                shields = 0;
-                health -= saberDamage;
+                int damage = (int)(saberDamage.getSlash() * 1.25) + saberDamage.getCold() + saberDamage.getElectricity() + saberDamage.getHeat() + (int)(saberDamage.getToxin() * 1.5);
+                health -= damage;
             }
 
             if (Random.Range(1, 100) < 15)

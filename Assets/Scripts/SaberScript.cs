@@ -10,16 +10,19 @@ public class SaberScript : MonoBehaviour
     private readonly int damage = 25;
     private readonly float speed = 100.0f;
     private ParticleSystem particle = null;
+    SaberDamage saberDamage;
+
     // Use this for initialization
     void Start ()
     {
+        saberDamage = new SaberDamage();
         defaultLocation.Set(0, 0, 0);
         particle = this.gameObject.GetComponentInChildren<ParticleSystem>();
 	}
 
-    public int GetDamage()
+    public SaberDamage GetDamage()
     {
-        return damage;
+        return saberDamage;
     }
 	
 	// Update is called once per frame
