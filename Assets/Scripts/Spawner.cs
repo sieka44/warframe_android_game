@@ -116,7 +116,6 @@ public class Spawner : MonoBehaviour
             {
                 int numberOfSpawnedEnemies = (int)Random.Range(1, 6);
                 int spawnScriptNumber = (int)Random.Range(1, 3);
-                Debug.Log(spawnScriptNumber);
 
                 float bombSpawnPorbability = Random.Range(0f, 100f);
                 bool willSpawnWithBomb = false;
@@ -143,7 +142,6 @@ public class Spawner : MonoBehaviour
 
     public void stopTheGame()
     {
-        Debug.Log("Game Stopped");
         StopCoroutine(spawnEnemiesProcess);
     }
 }
