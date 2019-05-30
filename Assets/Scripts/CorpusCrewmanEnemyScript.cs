@@ -8,10 +8,15 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
     WarframeCharacterScript warframeCharacter;
 
     Rigidbody2D rigidBody2d;
+
+    Renderer helmetRenderer;
+    Renderer bodyRenderer;
+    
     int health;
     int maxHealth;
     int shields;
     int maxShields;
+    bool isAlive;
     Vector2 startVelocity;
     Animation corpusCrewmanAnimation;
     Transform corpusCrewmanTransform;
@@ -20,7 +25,6 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
     Transform healthBar;
     Transform shieldsBar;
     AudioSource corpusCrewmanVoice;
-    AudioSource corpusCrewmanDeath;
 
     const float healthBarSize = 1.5f;
     const int BASE_HEALTH = 75;
@@ -74,10 +78,11 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
+        isAlive = true;
+
         warframeCharacter = GameObject.Find("WarframeCharacter").GetComponent<WarframeCharacterScript>();
         rigidBody2d = GetComponent<Rigidbody2D>();
         corpusCrewmanVoice = GetComponent<AudioSource>();
-        corpusCrewmanDeath = GameObject.FindGameObjectWithTag("SoundSource").GetComponent<AudioSource>();
 
         rotationAxis = new Vector3(Random.Range(-180, 180), Random.Range(-180, 180), Random.Range(-180, 180));
         corpusCrewmanTransform = transform.GetChild(1);
@@ -93,7 +98,10 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
         {
             bodyMaterials.Add(Resources.Load<Material>("Materials/CorpusCrewman/body" + i));
         }
-        transform.Find("corpusCrewmanContainer").Find("corpusCrewman").Find("crewman_body").GetComponent<Renderer>().material = bodyMaterials[(int)Random.Range(0, bodyMaterials.Count - 1)];
+
+        helmetRenderer = transform.Find("corpusCrewmanContainer").Find("corpusCrewman").Find("crewman_helmet").GetComponent<Renderer>();
+        bodyRenderer = transform.Find("corpusCrewmanContainer").Find("corpusCrewman").Find("crewman_body").GetComponent<Renderer>();
+        bodyRenderer.material = bodyMaterials[(int)Random.Range(0, bodyMaterials.Count - 1)];
         bodyMaterials = null;
 
         if(Random.Range(1, 100) < 15)
@@ -109,45 +117,61 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
     {
         if(collision.tag == "Saber")
         {
-            SaberDamage saberDamage = collision.gameObject.GetComponent<SaberScript>().GetDamage();
-
-            if (shields >0)
+            if(isAlive)
             {
-                int damage = saberDamage.getSlash() + (int)(saberDamage.getCold() * 1.5) + saberDamage.getElectricity() + saberDamage.getHeat() + saberDamage.getToxin();
-                shields = Mathf.Clamp(shields - damage, 0, shields);
-            }
-            else
-            {
-                int damage = (int)(saberDamage.getSlash() * 1.25) + saberDamage.getCold() + saberDamage.getElectricity() + saberDamage.getHeat() + (int)(saberDamage.getToxin() * 1.5);
-                health -= damage;
-            }
+                SaberDamage saberDamage = collision.gameObject.GetComponent<SaberScript>().GetDamage();
 
-            if (Random.Range(1, 100) < 15)
-            {
-                List<AudioClip> corpusSpeech = new List<AudioClip>();
-                for (int i = 1; i < 5; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Pain/corpus_pain_0" + i));
-                corpusCrewmanVoice.clip = corpusSpeech[Random.Range(0, 4)];
-                corpusCrewmanVoice.Play();
-            }
+                if (shields > 0)
+                {
+                    int damage = saberDamage.getSlash() + (int)(saberDamage.getCold() * 1.5) + saberDamage.getElectricity() + saberDamage.getHeat() + saberDamage.getToxin();
+                    shields = Mathf.Clamp(shields - damage, 0, shields);
+                }
+                else
+                {
+                    int damage = (int)(saberDamage.getSlash() * 1.25) + saberDamage.getCold() + saberDamage.getElectricity() + saberDamage.getHeat() + (int)(saberDamage.getToxin() * 1.5);
+                    health -= damage;
+                }
 
-            updateBar();
+                if (Random.Range(1, 100) < 15)
+                {
+                    List<AudioClip> corpusSpeech = new List<AudioClip>();
+                    for (int i = 1; i < 5; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Pain/corpus_pain_0" + i));
+                    corpusCrewmanVoice.clip = corpusSpeech[Random.Range(0, 4)];
+                    corpusCrewmanVoice.Play();
+                }
+
+                if (health <= 0)
+                {
+                    List<AudioClip> corpusSpeech = new List<AudioClip>();
+                    for (int i = 1; i < 7; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Death/corpus_death_0" + i));
+                    corpusCrewmanVoice.clip = corpusSpeech[Random.Range(0, 5)];
+                    corpusCrewmanVoice.volume = 0.33f;
+                    corpusCrewmanVoice.Play();
+                    isAlive = false;
+                    health = 0;
+                    //Destroy(gameObject);
+                    transform.Find("Canvas").gameObject.SetActive(false);
+                    transform.Find("HealthBar").gameObject.SetActive(false);
+                }
+
+                updateBar();
+            }
         }
     }
 
     // Update is called once per frame
     void Update ()
     {
-        if (health <= 0)
+        if (!isAlive && bodyRenderer.material.color.a >= 0)
         {
-            List<AudioClip> corpusSpeech = new List<AudioClip>();
-            for (int i = 1; i < 7; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Death/corpus_death_0" + i));
-            corpusCrewmanDeath.clip = corpusSpeech[Random.Range(0, 5)];
-            corpusCrewmanDeath.Play();
-            Destroy(gameObject);
+            Color newColor = new Color(bodyRenderer.material.color.r, bodyRenderer.material.color.g, bodyRenderer.material.color.b, bodyRenderer.material.color.a - (2f * Time.deltaTime));
+            helmetRenderer.material.color = newColor;
+            bodyRenderer.material.color = newColor;
         }
-        if (transform.position.y < -5.5)
+
+        if (transform.position.y < -5.5 && !corpusCrewmanVoice.isPlaying)
         {
-            warframeCharacter.getDamageFromEnemy(100);
+            if(isAlive) warframeCharacter.getDamageFromEnemy(100);
             Destroy(gameObject);
         }
             

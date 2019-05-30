@@ -7,11 +7,14 @@ public class WarframeCharacterScript : MonoBehaviour
 {
     AudioSource audioSource;
     AudioClip shieldRegenerationAudioClip;
+    AudioClip shieldDownAudioClip;
+
     Spawner spawner;
     int health;
     int shields;
     int MAX_HEALTH = 300;
     int MAX_SHIELDS = 100;
+    bool isShieldRegenerating = true;
     float shieldRegenerationSpeed;
 
     Transform healthBar;
@@ -48,7 +51,7 @@ public class WarframeCharacterScript : MonoBehaviour
         spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
         audioSource = GetComponent<AudioSource>();
         shieldRegenerationAudioClip = Resources.Load<AudioClip>("Sounds/Warframe/shieldRegeneration");
-
+        shieldDownAudioClip = Resources.Load<AudioClip>("Sounds/Warframe/shieldDown");
         health = MAX_HEALTH;
         shields = MAX_SHIELDS;
         shieldRegenerationSpeed = 15 + (float)(0.05 * MAX_SHIELDS);
@@ -71,6 +74,12 @@ public class WarframeCharacterScript : MonoBehaviour
         shields = Mathf.Clamp(shields, 0, MAX_SHIELDS);
         health = Mathf.Clamp(health - damage, 0, MAX_HEALTH);
 
+        if(shields <= 0 && isShieldRegenerating)
+        {
+            isShieldRegenerating = false;
+            audioSource.PlayOneShot(shieldDownAudioClip);
+        }
+
         if (health <= 0)
         {
             spawner.stopTheGame();
@@ -89,6 +98,7 @@ public class WarframeCharacterScript : MonoBehaviour
         yield return new WaitForSeconds(3f);
         audioSource.PlayOneShot(shieldRegenerationAudioClip);
         float shieldRegen = 0;
+        isShieldRegenerating = true;
         while (true)
         {
             shieldRegen += shieldRegenerationSpeed * Time.deltaTime;
