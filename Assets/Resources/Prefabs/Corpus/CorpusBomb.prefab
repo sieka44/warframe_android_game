@@ -572,6 +572,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f88343f50228c414781e8ba941f29807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionSpritePrefab: {fileID: 3962624700248197324, guid: 3587ca8ada7450144b7f6000d4361b51,
+    type: 3}
   explosionPower: 5
 --- !u!1 &9149178223008373899
 GameObject:

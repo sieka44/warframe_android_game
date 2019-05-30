@@ -5,11 +5,14 @@ using UnityEngine.UI;
 
 public class CorpusBombScript : MonoBehaviour
 {
+    public GameObject explosionSpritePrefab;
 
     Rigidbody2D rigidBody2d;
     Text label;
     int health;
     int maxHealth = 100;
+    int BASE_DAMAGE = 225;
+    int damage;
     Vector2 startVelocity;
     Transform corpusBombTransform;
     Vector3 rotationAxis;
@@ -23,11 +26,12 @@ public class CorpusBombScript : MonoBehaviour
         this.startVelocity = startVelocity;
     }
 
-    public void spawn(Vector3 spawnPosition, Vector2 spawnVelocity)
+    public void spawn(Vector3 spawnPosition, Vector2 spawnVelocity, int level)
     {
         transform.position = spawnPosition;
         startVelocity = spawnVelocity;
         health = maxHealth;
+        damage = (int)(BASE_DAMAGE * (1 + System.Math.Pow(level - 1, 2) * 0.0075));
 
         updateBar();
     }
@@ -75,7 +79,12 @@ public class CorpusBombScript : MonoBehaviour
 
                 Vector3 velocity = enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().getVelocity();
                 enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().setVelocity(velocity + explosionDirection.normalized * (5/Mathf.Pow(distance, 1/8)));
+                enemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().getDamageFromBomb((int)(damage * 1 / Mathf.Pow(distance, 1 / 2)));
             }
+
+            var newExplosion = Instantiate(explosionSpritePrefab);
+            newExplosion.transform.position = transform.position - new Vector3(0f, 0.8f, 0f);
+
             Destroy(gameObject);
         }
             

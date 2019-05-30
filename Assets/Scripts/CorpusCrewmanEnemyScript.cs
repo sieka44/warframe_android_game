@@ -140,23 +140,25 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
                     corpusCrewmanVoice.Play();
                 }
 
-                if (health <= 0)
-                {
-                    List<AudioClip> corpusSpeech = new List<AudioClip>();
-                    for (int i = 1; i < 7; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Death/corpus_death_0" + i));
-                    corpusCrewmanVoice.clip = corpusSpeech[Random.Range(0, 5)];
-                    corpusCrewmanVoice.volume = 0.33f;
-                    corpusCrewmanVoice.Play();
-                    isAlive = false;
-                    health = 0;
-                    //Destroy(gameObject);
-                    transform.Find("Canvas").gameObject.SetActive(false);
-                    transform.Find("HealthBar").gameObject.SetActive(false);
-                }
+                checkHealthStatus();
 
                 updateBar();
             }
         }
+    }
+
+    public void getDamageFromBomb (int damage)
+    {
+        int shieldsTemp = shields;
+        int healthTemp = health;
+        shields -= damage;
+        damage = Mathf.Clamp(shields * -1, 0, Mathf.Abs(shields));
+        shields = Mathf.Clamp(shields, 0, shieldsTemp);
+        health = Mathf.Clamp(health - damage, 0, healthTemp);
+
+        checkHealthStatus();
+
+        updateBar();
     }
 
     // Update is called once per frame
@@ -177,4 +179,21 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
             
         corpusCrewmanTransform.Rotate(rotationAxis, 100 * Time.deltaTime);
 	}
+
+    private void checkHealthStatus()
+    {
+        if (health <= 0)
+        {
+            List<AudioClip> corpusSpeech = new List<AudioClip>();
+            for (int i = 1; i < 7; i++) corpusSpeech.Add(Resources.Load<AudioClip>("Sounds/CorpusCrewman/Death/corpus_death_0" + i));
+            corpusCrewmanVoice.clip = corpusSpeech[Random.Range(0, 5)];
+            corpusCrewmanVoice.volume = 0.33f;
+            corpusCrewmanVoice.Play();
+            isAlive = false;
+            health = 0;
+            //Destroy(gameObject);
+            transform.Find("Canvas").gameObject.SetActive(false);
+            transform.Find("HealthBar").gameObject.SetActive(false);
+        }
+    }
 }

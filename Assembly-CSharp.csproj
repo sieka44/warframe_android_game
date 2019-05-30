@@ -71,6 +71,7 @@
     <Compile Include="Assets\EffectExamples\TutorialInfo\Scripts\Readme.cs" />
     <Compile Include="Assets\Scripts\CorpusBombScript.cs" />
     <Compile Include="Assets\Scripts\CorpusCrewmanEnemyScript.cs" />
+    <Compile Include="Assets\Scripts\ExplosionScript.cs" />
     <Compile Include="Assets\Scripts\Saber.cs" />
     <Compile Include="Assets\Scripts\SaberScript.cs" />
     <Compile Include="Assets\Scripts\Spawner.cs" />

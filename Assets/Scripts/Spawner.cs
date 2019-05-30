@@ -39,7 +39,7 @@ public class Spawner : MonoBehaviour
             spawnVelocity.x = Random.Range(-6, -4);
         }
 
-        newBomb.gameObject.GetComponent<CorpusBombScript>().spawn(spawnPosition, spawnVelocity);
+        newBomb.gameObject.GetComponent<CorpusBombScript>().spawn(spawnPosition, spawnVelocity, enemyLevel);
     }
 
     void Start()
