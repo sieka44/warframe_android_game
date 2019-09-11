@@ -145,7 +145,7 @@ public class Spawner : MonoBehaviour
 
                 float lootLockerSpawnProbability = Random.Range(0f, 100f);
                 bool willSpawnWithLootLocker = false;
-                if (bombSpawnPorbability < 10f) willSpawnWithLootLocker = true;
+                if (lootLockerSpawnProbability < 15f) willSpawnWithLootLocker = true;
 
                 switch (spawnScriptNumber)
                 {
