@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class WarframeCharacterScript : MonoBehaviour
 {
+    LootStorage lootStorage;
     AudioSource audioSource;
     AudioClip shieldRegenerationAudioClip;
     AudioClip shieldDownAudioClip;
@@ -38,6 +39,10 @@ public class WarframeCharacterScript : MonoBehaviour
         shieldBarText.text = shields.ToString();
     }
 
+    private void Awake()
+    {
+        lootStorage = new LootStorage();
+    }
 
 
     // Start is called before the first frame update
@@ -91,6 +96,11 @@ public class WarframeCharacterScript : MonoBehaviour
             shieldRegenerationCoroutine = StartCoroutine(shieldRegeneration());
         }
         updateStatusBar();
+    }
+
+    public void getEndo(uint endoQuantity)
+    {
+        lootStorage.putEndo(endoQuantity);
     }
 
     private IEnumerator shieldRegeneration()

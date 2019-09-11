@@ -16,6 +16,7 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
     int maxHealth;
     int shields;
     int maxShields;
+    int level;
     bool isAlive;
     Vector2 startVelocity;
     Animation corpusCrewmanAnimation;
@@ -51,11 +52,12 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
     {
         transform.position = spawnPosition;
         startVelocity = spawnVelocity;
-        maxHealth = (int)(BASE_HEALTH * (1 + System.Math.Pow(enemyLevel - 1, 2) * 0.015));
-        maxShields = (int)(BASE_SHIELDS * (1 + System.Math.Pow(enemyLevel - 1, 2)* 0.0075));
+        level = enemyLevel;
+        maxHealth = (int)(BASE_HEALTH * (1 + System.Math.Pow(level - 1, 2) * 0.015));
+        maxShields = (int)(BASE_SHIELDS * (1 + System.Math.Pow(level - 1, 2)* 0.0075));
         health = maxHealth;
         shields = maxShields;
-        transform.Find("Canvas").Find("Text").GetComponent<Text>().text = enemyLevel.ToString();
+        transform.Find("Canvas").Find("Text").GetComponent<Text>().text = level.ToString();
 
         updateBar();
     }
@@ -194,6 +196,12 @@ public class CorpusCrewmanEnemyScript : MonoBehaviour
             //Destroy(gameObject);
             transform.Find("Canvas").gameObject.SetActive(false);
             transform.Find("HealthBar").gameObject.SetActive(false);
+            warframeCharacter.getEndo(dropEndo());
         }
+    }
+
+    private uint dropEndo()
+    {
+        return (uint)level;
     }
 }
