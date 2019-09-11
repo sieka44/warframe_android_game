@@ -7,6 +7,8 @@ public class Spawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public GameObject bombPrefab;
+    public GameObject lootLockerPrefab;
+
     private Vector3 spawnPosition;
     private Vector2 spawnVelocity;
 
@@ -42,6 +44,23 @@ public class Spawner : MonoBehaviour
         newBomb.gameObject.GetComponent<CorpusBombScript>().spawn(spawnPosition, spawnVelocity, enemyLevel);
     }
 
+    void createNewLocker()
+    {
+        var newLocker = Instantiate(lootLockerPrefab);
+        Vector3 spawnPosition = generateBombSpawnPosition();
+        spawnVelocity.Set(Random.Range(5, 7), Random.Range(7, 10));
+        if (spawnPosition.x < 0)
+        {
+            spawnVelocity.x = Random.Range(4, 6);
+        }
+        else
+        {
+            spawnVelocity.x = Random.Range(-6, -4);
+        }
+
+        newLocker.gameObject.GetComponent<CorpusLootLocker>().spawn(spawnPosition, spawnVelocity);
+    }
+
     void Start()
     {
         spawnEnemiesProcess = SpawnEnemies();
@@ -54,7 +73,7 @@ public class Spawner : MonoBehaviour
         enemyLevel = 1 + (int)(Time.timeSinceLevelLoad / 10);
     }
 
-    void spawnAllFromBottom(int numberOfSpawnedEnemies, bool willSpawnWithBomb)
+    void spawnAllFromBottom(int numberOfSpawnedEnemies, bool willSpawnWithBomb, bool willSpawnWithLootLocker)
     {
         for (int i = 0; i < numberOfSpawnedEnemies; i++)
         {
@@ -76,11 +95,13 @@ public class Spawner : MonoBehaviour
             newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().spawn(enemyLevel, spawnPosition, spawnVelocity);
         }
         if (willSpawnWithBomb) createNewBomb();
+        if (willSpawnWithLootLocker) createNewLocker();
     }
 
-    private IEnumerator spawnOneByOneFromBotton(int numberOfSpawnedEnemies, bool willSpawnWithBomb)
+    private IEnumerator spawnOneByOneFromBotton(int numberOfSpawnedEnemies, bool willSpawnWithBomb, bool willSpawnWithLootLocker)
     {
         int bombSpawnOrder =Random.Range(1, numberOfSpawnedEnemies);
+        int lockerSpawnOrder = Random.Range(1, numberOfSpawnedEnemies);
         for (int i = 0; i < numberOfSpawnedEnemies; i++)
         {
             var newEnemy = Instantiate(enemyPrefab);
@@ -101,6 +122,7 @@ public class Spawner : MonoBehaviour
             newEnemy.gameObject.GetComponent<CorpusCrewmanEnemyScript>().spawn(enemyLevel, spawnPosition, spawnVelocity);
 
             if ((willSpawnWithBomb) && (bombSpawnOrder == i)) createNewBomb();
+            if ((willSpawnWithLootLocker) && (lockerSpawnOrder == i)) createNewLocker();
             yield return new WaitForSeconds(0.2f);
         }
     }
@@ -119,18 +141,22 @@ public class Spawner : MonoBehaviour
 
                 float bombSpawnPorbability = Random.Range(0f, 100f);
                 bool willSpawnWithBomb = false;
-                if (bombSpawnPorbability < 10f) willSpawnWithBomb = true;
+                if (bombSpawnPorbability < 15f) willSpawnWithBomb = true;
+
+                float lootLockerSpawnProbability = Random.Range(0f, 100f);
+                bool willSpawnWithLootLocker = false;
+                if (bombSpawnPorbability < 10f) willSpawnWithLootLocker = true;
 
                 switch (spawnScriptNumber)
                 {
                     case 1:
                         {
-                            spawnAllFromBottom(numberOfSpawnedEnemies, willSpawnWithBomb);
+                            spawnAllFromBottom(numberOfSpawnedEnemies, willSpawnWithBomb, willSpawnWithLootLocker);
                             break;
                         }
                     case 2:
                         {
-                            StartCoroutine(spawnOneByOneFromBotton(numberOfSpawnedEnemies, willSpawnWithBomb));
+                            StartCoroutine(spawnOneByOneFromBotton(numberOfSpawnedEnemies, willSpawnWithBomb, willSpawnWithLootLocker));
                             
                             break;
                         }

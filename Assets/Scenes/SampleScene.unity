@@ -226,6 +226,8 @@ MonoBehaviour:
     type: 3}
   bombPrefab: {fileID: 4116102991518454619, guid: c665bb678a4efcf4d9b6cc34f5fa1be5,
     type: 3}
+  lootLockerPrefab: {fileID: 6217997231775268440, guid: 4bcc5777ca3cbed42a3799eef1354875,
+    type: 3}
 --- !u!212 &45414880
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -11539,7 +11541,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1472402245
 RectTransform:
   m_ObjectHideFlags: 0
